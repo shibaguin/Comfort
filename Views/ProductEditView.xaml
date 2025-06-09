@@ -1,3 +1,4 @@
+<!-- Представление для редактирования параметров продукта -->
 <UserControl x:Class="Comfort.Views.ProductEditView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -6,17 +7,20 @@
              xmlns:local="clr-namespace:Comfort.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="400">
+    <!-- Ресурсы стилей -->
     <UserControl.Resources>
         <ResourceDictionary Source="/Resources/AppStyles.xaml"/>
     </UserControl.Resources>
     <ScrollViewer>
         <StackPanel Margin="16">
+            <!-- Заголовок и кнопка возврата -->
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Редактирование параметров продукта" Style="{StaticResource HeaderStyle}"/>
+                <!-- Кнопка возврата к списку продуктов -->
                 <Button Grid.Column="1" 
                         Content="Назад" 
                         Command="{Binding DataContext.NavigateBackCommand, RelativeSource={RelativeSource AncestorType=Window}}"
@@ -24,10 +28,12 @@
                         Width="70" Height="32" Padding="0"/>
             </Grid>
             
+            <!-- Поле ввода артикула -->
             <Label Content="Артикул"/>
             <TextBox Text="{Binding Product.Article, UpdateSourceTrigger=PropertyChanged}"
                      ToolTip="Введите уникальный артикул продукта"/>
             
+            <!-- Выбор типа продукта -->
             <Label Content="Тип продукта"/>
             <ComboBox ItemsSource="{Binding ProductTypes}"
                       SelectedValue="{Binding Product.ProductTypeID}"
@@ -35,14 +41,17 @@
                       DisplayMemberPath="ProductTypeName"
                       ToolTip="Выберите тип продукта из списка"/>
             
+            <!-- Поле ввода наименования -->
             <Label Content="Наименование"/>
             <TextBox Text="{Binding Product.ProductName, UpdateSourceTrigger=PropertyChanged}"
                      ToolTip="Введите наименование продукта"/>
             
+            <!-- Поле ввода стоимости -->
             <Label Content="Минимальная стоимость для партнера"/>
             <TextBox Text="{Binding Product.MinPartnerCost, StringFormat=N2, UpdateSourceTrigger=PropertyChanged}"
                      ToolTip="Введите стоимость с точностью до копеек"/>
             
+            <!-- Выбор основного материала -->
             <Label Content="Основной материал"/>
             <ComboBox ItemsSource="{Binding Materials}"
                       SelectedValue="{Binding Product.MainMaterialID}"
@@ -50,6 +59,7 @@
                       DisplayMemberPath="MaterialName"
                       ToolTip="Выберите основной материал из списка"/>
             
+            <!-- Кнопка сохранения изменений -->
             <Button Content="Сохранить" 
                     Command="{Binding SaveCommand}"
                     Style="{StaticResource ActionButtonStyle}"
