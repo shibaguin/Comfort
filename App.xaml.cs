@@ -7,6 +7,7 @@ using Comfort.Services;
 using Serilog;
 using Serilog.Events;
 using Serilog.Extensions.Logging;
+using System.IO;
 
 namespace Comfort;
 
@@ -47,19 +48,21 @@ public partial class App : Application
     {
         try
         {
+            var logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs");
+            Directory.CreateDirectory(logPath);
+
             Log.Logger = new LoggerConfiguration()
                 // Устанавливаем минимальный уровень логирования
                 .MinimumLevel.Debug()
-                // Повышаем уровень логирования для Microsoft до Information
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 // Добавляем вывод в консоль
-                .WriteTo.Console()
-                // Настраиваем запись в файл с ежедневной ротацией
-                .WriteTo.File("logs/app-.log", 
+                .WriteTo.Console(
+                    outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+                // Добавляем запись в файл с ежедневной ротацией
+                .WriteTo.File(
+                    Path.Combine(logPath, "app-.log"),
                     rollingInterval: RollingInterval.Day,
-                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
-                // Добавляем вывод в Debug окно Visual Studio
-                .WriteTo.Debug()
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+                    retainedFileCountLimit: 31)
                 .CreateLogger();
 
             Log.Information("Приложение запущено");
