@@ -12,9 +12,7 @@ using Comfort.ViewModels;
 
 namespace Comfort.Views;
 
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
+// Главное окно приложения, инициализирует основной ViewModel и устанавливает ProductView как начальное представление
 public partial class MainWindow : Window
 {
     public MainWindow()
