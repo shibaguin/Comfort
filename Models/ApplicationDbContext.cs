@@ -1,12 +1,27 @@
+using System.Configuration;
 using Microsoft.EntityFrameworkCore;
 
 namespace Comfort.Models;
 
+// Контекст базы данных
 public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
+    }
+
+    // Конструктор для WPF
+    public ApplicationDbContext() : base(GetOptions())
+    {
+    }
+
+    private static DbContextOptions<ApplicationDbContext> GetOptions()
+    {
+        var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+        var connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+        optionsBuilder.UseSqlServer(connectionString);
+        return optionsBuilder.Options;
     }
 
     public DbSet<Product> Products { get; set; }
@@ -15,11 +30,12 @@ public class ApplicationDbContext : DbContext
     public DbSet<Workshop> Workshops { get; set; }
     public DbSet<ProductWorkshop> ProductWorkshops { get; set; }
 
+    // Настройка модели данных
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        // Настройка уникальных индексов
+        // Уникальные индексы
         modelBuilder.Entity<ProductType>()
             .HasIndex(pt => pt.ProductTypeName)
             .IsUnique();
@@ -36,7 +52,7 @@ public class ApplicationDbContext : DbContext
             .HasIndex(p => p.Article)
             .IsUnique();
 
-        // Настройка связей
+        // Связи между сущностями
         modelBuilder.Entity<Product>()
             .HasOne(p => p.ProductType)
             .WithMany(pt => pt.Products)

@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Comfort.Models;
 
+// Модель связи продукта с цехом
 public class ProductWorkshop
 {
     [Key]

@@ -5,20 +5,24 @@ using Comfort.Models;
 
 namespace Comfort.Services;
 
+// Интерфейс сервиса базы данных
 public interface IDatabaseService
 {
     Task<bool> TestConnectionAsync();
     ApplicationDbContext CreateDbContext();
 }
 
+// Реализация сервиса базы данных
 public class DatabaseService : IDatabaseService
 {
     private readonly ILogger<DatabaseService> _logger;
+    private readonly IErrorHandlingService _errorHandling;
     private readonly string _connectionString;
 
-    public DatabaseService(ILogger<DatabaseService> logger)
+    public DatabaseService(ILogger<DatabaseService> logger, IErrorHandlingService errorHandling)
     {
         _logger = logger;
+        _errorHandling = errorHandling;
         _connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
     }
 
@@ -31,15 +35,23 @@ public class DatabaseService : IDatabaseService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Ошибка при тестировании подключения к БД");
+            _errorHandling.LogError(ex, "Ошибка при тестировании подключения к БД");
             return false;
         }
     }
 
     public ApplicationDbContext CreateDbContext()
     {
-        var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-        optionsBuilder.UseSqlServer(_connectionString);
-        return new ApplicationDbContext(optionsBuilder.Options);
+        try
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            optionsBuilder.UseSqlServer(_connectionString);
+            return new ApplicationDbContext(optionsBuilder.Options);
+        }
+        catch (Exception ex)
+        {
+            _errorHandling.LogError(ex, "Ошибка при создании контекста базы данных");
+            throw;
+        }
     }
 } 
