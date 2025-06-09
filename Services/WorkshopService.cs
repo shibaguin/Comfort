@@ -92,9 +92,12 @@ namespace Comfort.Services
                 var coefficient = Convert.ToDecimal(row["Coefficient"]);
                 var lossPercentage = Convert.ToDecimal(row["LossPercentage"]);
 
-                var rawMaterialsPerUnit = param1 * param2 * (double)coefficient;
+                decimal param1Decimal = (decimal)param1;
+                decimal param2Decimal = (decimal)param2;
+
+                var rawMaterialsPerUnit = param1Decimal * param2Decimal * coefficient;
                 var totalRawMaterials = rawMaterialsPerUnit * quantity;
-                var rawMaterialsWithLoss = totalRawMaterials * (1 + (double)lossPercentage / 100);
+                var rawMaterialsWithLoss = totalRawMaterials * (1m + lossPercentage / 100m);
 
                 _logger.Information("Calculated raw materials: {RawMaterials}", Math.Ceiling(rawMaterialsWithLoss));
                 return (int)Math.Ceiling(rawMaterialsWithLoss);
