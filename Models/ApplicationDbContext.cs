@@ -1,3 +1,4 @@
+using System.Configuration;
 using Microsoft.EntityFrameworkCore;
 
 namespace Comfort.Models;
@@ -7,6 +8,19 @@ public class ApplicationDbContext : DbContext
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
+    }
+
+    // Конструктор по умолчанию для WPF
+    public ApplicationDbContext() : base(GetOptions())
+    {
+    }
+
+    private static DbContextOptions<ApplicationDbContext> GetOptions()
+    {
+        var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+        var connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+        optionsBuilder.UseSqlServer(connectionString);
+        return optionsBuilder.Options;
     }
 
     public DbSet<Product> Products { get; set; }
