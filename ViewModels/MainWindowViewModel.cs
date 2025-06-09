@@ -20,10 +20,28 @@ namespace Comfort.ViewModels
             set { _currentView = value; OnPropertyChanged(); }
         }
 
+        private UserControl? _editView;
+        public UserControl? EditView
+        {
+            get => _editView;
+            set { _editView = value; OnPropertyChanged(); }
+        }
+
         public MainWindowViewModel()
         {
             // По умолчанию открываем ProductView
             CurrentView = new ProductView();
+        }
+
+        // Метод для управления областью редактирования
+        public void ShowEditView(UserControl view)
+        {
+            EditView = view;
+        }
+
+        public void HideEditView()
+        {
+            EditView = null;
         }
     }
 } 

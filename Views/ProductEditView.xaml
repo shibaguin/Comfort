@@ -1,0 +1,47 @@
+<UserControl x:Class="Comfort.Views.ProductEditView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Comfort.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary Source="/Resources/AppStyles.xaml"/>
+    </UserControl.Resources>
+    <ScrollViewer>
+        <StackPanel Margin="16">
+            <TextBlock Text="{Binding Title}" Style="{StaticResource HeaderStyle}"/>
+            
+            <Label Content="Артикул"/>
+            <TextBox Text="{Binding Product.Article, UpdateSourceTrigger=PropertyChanged}"/>
+            
+            <Label Content="Тип продукта"/>
+            <ComboBox ItemsSource="{Binding ProductTypes}"
+                      SelectedValue="{Binding Product.ProductTypeID}"
+                      SelectedValuePath="ProductTypeID"
+                      DisplayMemberPath="ProductTypeName"/>
+            
+            <Label Content="Наименование"/>
+            <TextBox Text="{Binding Product.ProductName, UpdateSourceTrigger=PropertyChanged}"/>
+            
+            <Label Content="Минимальная стоимость для партнера"/>
+            <TextBox Text="{Binding Product.MinPartnerCost, StringFormat=N2, UpdateSourceTrigger=PropertyChanged}"/>
+            
+            <Label Content="Основной материал"/>
+            <ComboBox ItemsSource="{Binding Materials}"
+                      SelectedValue="{Binding Product.MainMaterialID}"
+                      SelectedValuePath="MaterialID"
+                      DisplayMemberPath="MaterialName"/>
+            
+            <StackPanel Style="{StaticResource ButtonPanelStyle}">
+                <Button Content="Сохранить" 
+                        Command="{Binding SaveCommand}"
+                        Style="{StaticResource ActionButtonStyle}"/>
+                <Button Content="Отмена" 
+                        Command="{Binding CancelCommand}"
+                        Style="{StaticResource ActionButtonStyle}"/>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl> 

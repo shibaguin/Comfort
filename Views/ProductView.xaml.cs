@@ -8,7 +8,7 @@ namespace Comfort.Views
         public ProductView()
         {
             InitializeComponent();
-            DataContext = new ProductViewModel();
+            DataContext = new ProductViewModel((MainWindowViewModel)App.Current.MainWindow.DataContext);
         }
     }
 } 
