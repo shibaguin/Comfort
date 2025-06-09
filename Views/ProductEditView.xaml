@@ -26,7 +26,7 @@
             <TextBox Text="{Binding Product.ProductName, UpdateSourceTrigger=PropertyChanged}"/>
             
             <Label Content="Минимальная стоимость для партнера"/>
-            <TextBox Text="{Binding Product.MinPartnerCost, StringFormat=N2, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Text="{Binding Product.MinPartnerCost, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"/>
             
             <Label Content="Основной материал"/>
             <ComboBox ItemsSource="{Binding Materials}"

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using System.Windows.Input;
+using Comfort.Views;
 
 namespace Comfort.ViewModels
 {
@@ -12,7 +13,7 @@ namespace Comfort.ViewModels
     {
         private readonly Product _product;
         private readonly ProductViewModel _parentViewModel;
-        private readonly MainWindowViewModel _mainViewModel;
+        private readonly ProductEditWindow _currentWindow;
 
         public string Title => _product.ProductID == 0 ? "Новый продукт" : "Редактирование продукта";
         public Product Product => _product;
@@ -23,11 +24,11 @@ namespace Comfort.ViewModels
         public ICommand SaveCommand { get; }
         public ICommand CancelCommand { get; }
 
-        public ProductEditViewModel(Product product, ProductViewModel parentViewModel)
+        public ProductEditViewModel(Product product, ProductViewModel parentViewModel, ProductEditWindow currentWindow)
         {
             _product = product;
             _parentViewModel = parentViewModel;
-            _mainViewModel = parentViewModel.MainViewModel;
+            _currentWindow = currentWindow;
 
             SaveCommand = new RelayCommand(Save);
             CancelCommand = new RelayCommand(Cancel);
@@ -75,7 +76,7 @@ namespace Comfort.ViewModels
                 }
 
                 _parentViewModel.LoadProducts();
-                _mainViewModel.HideEditView();
+                _currentWindow.Close();
             }
             catch (Exception ex)
             {
@@ -90,7 +91,7 @@ namespace Comfort.ViewModels
 
         private void Cancel()
         {
-            _mainViewModel.HideEditView();
+            _currentWindow.Close();
         }
     }
 } 

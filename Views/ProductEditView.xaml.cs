@@ -1,13 +1,13 @@
 using System.Windows.Controls;
+using System.Windows;
 
 namespace Comfort.Views
 {
     public partial class ProductEditView : UserControl
     {
-        public ProductEditView(Models.Product product, ViewModels.ProductViewModel viewModel)
+        public ProductEditView()
         {
             InitializeComponent();
-            DataContext = new ViewModels.ProductEditViewModel(product, viewModel);
         }
     }
 } 

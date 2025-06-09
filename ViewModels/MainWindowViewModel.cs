@@ -30,7 +30,7 @@ namespace Comfort.ViewModels
         public MainWindowViewModel()
         {
             // По умолчанию открываем ProductView
-            CurrentView = new ProductView();
+            CurrentView = new ProductView(this);
         }
 
         // Метод для управления областью редактирования

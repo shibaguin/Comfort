@@ -5,10 +5,10 @@ namespace Comfort.Views
 {
     public partial class ProductView : UserControl
     {
-        public ProductView()
+        public ProductView(MainWindowViewModel mainViewModel)
         {
             InitializeComponent();
-            DataContext = new ProductViewModel((MainWindowViewModel)App.Current.MainWindow.DataContext);
+            DataContext = new ProductViewModel(mainViewModel);
         }
     }
 } 

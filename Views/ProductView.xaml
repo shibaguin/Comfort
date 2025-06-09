@@ -21,7 +21,8 @@
                         Content="Добавить продукт" 
                         Command="{Binding AddProductCommand}"
                         Style="{StaticResource ActionButtonStyle}"
-                        Height="32" Width="150" Margin="0,0,0,12"/>
+                        HorizontalAlignment="Right"
+                        Margin="0,0,0,12"/>
             </Grid>
             <ItemsControl ItemsSource="{Binding Products}">
                 <ItemsControl.ItemTemplate>
@@ -44,7 +45,7 @@
                                         <Run Text="{Binding ProductName}"/>
                                     </TextBlock>
                                     <TextBlock FontSize="14" Foreground="#444" Margin="0,8,0,0" Text="{Binding Article}"/>
-                                    <TextBlock FontSize="14" Foreground="#444" Text="{Binding MinPartnerCost, StringFormat='Минимальная стоимость для партнера: {0:C}'}"/>
+                                    <TextBlock FontSize="14" Foreground="#444" Text="{Binding MinPartnerCost, StringFormat='Минимальная стоимость для партнера: {0} ₽'}"/>
                                     <TextBlock FontSize="14" Foreground="#444" Text="{Binding MainMaterial.MaterialName, StringFormat='Основной материал: {0}'}"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="1" 
