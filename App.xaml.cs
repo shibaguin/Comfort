@@ -16,6 +16,7 @@ public partial class App : Application
 {
     // Провайдер сервисов для внедрения зависимостей
     private ServiceProvider _serviceProvider = null!;
+    private IErrorHandlingService _errorHandling = null!;
 
     // Конструктор приложения. Инициализирует все необходимые компоненты
     public App()
@@ -29,6 +30,7 @@ public partial class App : Application
             var services = new ServiceCollection();
             ConfigureServices(services);
             _serviceProvider = services.BuildServiceProvider();
+            _errorHandling = _serviceProvider.GetRequiredService<IErrorHandlingService>();
         }
         catch (Exception ex)
         {
@@ -86,6 +88,8 @@ public partial class App : Application
         {
             // Регистрация сервисов приложения
             services.AddSingleton<IDatabaseService, DatabaseService>();
+            services.AddSingleton(Log.Logger); // Регистрируем глобальный логгер
+            services.AddSingleton<IErrorHandlingService, ErrorHandlingService>();
             
             // Настройка системы логирования
             services.AddLogging(builder =>
@@ -135,40 +139,20 @@ public partial class App : Application
     private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
         var exception = e.ExceptionObject as Exception;
-        // Логируем критическую ошибку
-        Log.Fatal(exception, "Необработанное исключение в домене приложения");
-        MessageBox.Show(
-            $"Произошла критическая ошибка:\n{exception?.Message}",
-            "Критическая ошибка",
-            MessageBoxButton.OK,
-            MessageBoxImage.Error);
+        _errorHandling.LogError(exception ?? new Exception("Неизвестная ошибка"), "Необработанное исключение в домене приложения");
     }
 
     // Обработчик необработанных исключений в UI потоке
     private void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
     {
-        // Логируем ошибку в UI потоке
-        Log.Error(e.Exception, "Необработанное исключение в UI потоке");
-        MessageBox.Show(
-            $"Произошла ошибка в интерфейсе:\n{e.Exception.Message}",
-            "Ошибка приложения",
-            MessageBoxButton.OK,
-            MessageBoxImage.Error);
-        // Помечаем исключение как обработанное
+        _errorHandling.LogError(e.Exception, "Необработанное исключение в UI потоке");
         e.Handled = true;
     }
 
     // Обработчик необработанных исключений в асинхронных задачах
     private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
     {
-        // Логируем ошибку в задаче
-        Log.Error(e.Exception, "Необработанное исключение в задаче");
-        MessageBox.Show(
-            $"Произошла ошибка в фоновой задаче:\n{e.Exception.Message}",
-            "Ошибка задачи",
-            MessageBoxButton.OK,
-            MessageBoxImage.Error);
-        // Помечаем исключение как обработанное
+        _errorHandling.LogError(e.Exception, "Необработанное исключение в задаче");
         e.SetObserved();
     }
 
