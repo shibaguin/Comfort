@@ -7,6 +7,7 @@ using Serilog;
 
 namespace Comfort.Services
 {
+    // Реализация сервиса для работы с цехами производства
     public class WorkshopService : IWorkshopService
     {
         private readonly IDatabaseService _databaseService;
@@ -18,6 +19,7 @@ namespace Comfort.Services
             _logger = logger;
         }
 
+        // Получение списка цехов, связанных с продуктом, из базы данных
         public async Task<List<WorkshopInfo>> GetWorkshopsForProduct(int productId)
         {
             try
@@ -53,6 +55,7 @@ namespace Comfort.Services
             }
         }
 
+        // Расчет необходимого количества сырья с учетом коэффициентов и потерь
         public async Task<int> CalculateRawMaterials(int productTypeId, int materialTypeId, int quantity, double param1, double param2)
         {
             try
@@ -95,6 +98,7 @@ namespace Comfort.Services
                 decimal param1Decimal = (decimal)param1;
                 decimal param2Decimal = (decimal)param2;
 
+                // Расчет количества сырья с учетом коэффициентов и потерь
                 var rawMaterialsPerUnit = param1Decimal * param2Decimal * coefficient;
                 var totalRawMaterials = rawMaterialsPerUnit * quantity;
                 var rawMaterialsWithLoss = totalRawMaterials * (1m + lossPercentage / 100m);
