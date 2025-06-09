@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Comfort.Models;
 
-// Контекст базы данных
+// Контекст базы данных приложения
 public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -11,11 +11,12 @@ public class ApplicationDbContext : DbContext
     {
     }
 
-    // Конструктор для WPF
+    // Конструктор для использования в WPF-приложении
     public ApplicationDbContext() : base(GetOptions())
     {
     }
 
+    // Получение настроек подключения к базе данных
     private static DbContextOptions<ApplicationDbContext> GetOptions()
     {
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
@@ -24,18 +25,19 @@ public class ApplicationDbContext : DbContext
         return optionsBuilder.Options;
     }
 
+    // Коллекции сущностей базы данных
     public DbSet<Product> Products { get; set; }
     public DbSet<ProductType> ProductTypes { get; set; }
     public DbSet<Material> Materials { get; set; }
     public DbSet<Workshop> Workshops { get; set; }
     public DbSet<ProductWorkshop> ProductWorkshops { get; set; }
 
-    // Настройка модели данных
+    // Настройка модели данных и связей между сущностями
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        // Уникальные индексы
+        // Настройка уникальных индексов для предотвращения дублирования
         modelBuilder.Entity<ProductType>()
             .HasIndex(pt => pt.ProductTypeName)
             .IsUnique();
@@ -52,7 +54,7 @@ public class ApplicationDbContext : DbContext
             .HasIndex(p => p.Article)
             .IsUnique();
 
-        // Связи между сущностями
+        // Настройка связей между сущностями с правилами удаления
         modelBuilder.Entity<Product>()
             .HasOne(p => p.ProductType)
             .WithMany(pt => pt.Products)
