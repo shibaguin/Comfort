@@ -6,6 +6,8 @@ using System.Windows.Input;
 using System.Windows;
 using System;
 using Comfort.Views;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Comfort.ViewModels
 {
@@ -18,6 +20,7 @@ namespace Comfort.ViewModels
         public ICommand AddProductCommand { get; }
         public ICommand EditProductCommand { get; }
         public ICommand DeleteProductCommand { get; }
+        public ICommand ShowWorkshopsCommand { get; }
 
         public ProductViewModel(MainWindowViewModel mainViewModel)
         {
@@ -27,6 +30,7 @@ namespace Comfort.ViewModels
             AddProductCommand = new RelayCommand(AddProduct);
             EditProductCommand = new RelayCommand<Product>(EditProduct);
             DeleteProductCommand = new RelayCommand<Product>(DeleteProduct);
+            ShowWorkshopsCommand = new RelayCommand<Product>(ShowWorkshops);
 
             LoadProducts();
         }
@@ -98,6 +102,17 @@ namespace Comfort.ViewModels
                     );
                 }
             }
+        }
+
+        private void ShowWorkshops(Product product)
+        {
+            if (product == null) return;
+
+            var workshopView = new WorkshopView();
+            var workshopViewModel = App.Services.GetService<WorkshopListViewModel>();
+            workshopViewModel.SelectedProductId = product.ProductID;
+            workshopView.DataContext = workshopViewModel;
+            _mainViewModel.NavigateTo(workshopView);
         }
     }
 } 

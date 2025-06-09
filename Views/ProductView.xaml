@@ -57,6 +57,11 @@
                                              Margin="0,0,0,8"/>
                                     <StackPanel Orientation="Horizontal" 
                                               HorizontalAlignment="Right" Margin="0,0,0,0">
+                                        <Button Content="🏭" ToolTip="Цеха производства"
+                                                Command="{Binding DataContext.ShowWorkshopsCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                Style="{StaticResource ActionButtonStyle}"
+                                                FontSize="14" Width="32" Height="32" Padding="0" Margin="0,0,8,0"/>
                                         <Button Content="✏️" ToolTip="Редактировать"
                                                 Command="{Binding DataContext.EditProductCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                 CommandParameter="{Binding}"

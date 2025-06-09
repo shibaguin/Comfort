@@ -42,7 +42,7 @@ namespace Comfort.Services
                     {
                         WorkshopName = row.Field<string>("WorkshopName") ?? string.Empty,
                         StaffCount = row.Field<int>("StaffCount"),
-                        ManufacturingTime = row.Field<double>("ManufacturingTime")
+                        ManufacturingTime = row.Field<decimal>("ManufacturingTime")
                     })
                     .ToList();
             }

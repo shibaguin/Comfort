@@ -13,6 +13,6 @@ namespace Comfort.Services
     {
         public required string WorkshopName { get; set; }
         public int StaffCount { get; set; }
-        public double ManufacturingTime { get; set; }
+        public decimal ManufacturingTime { get; set; }
     }
 } 
