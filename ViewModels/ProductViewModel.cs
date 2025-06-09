@@ -8,6 +8,8 @@ using System;
 using Comfort.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Comfort.Services;
+using Serilog;
 
 namespace Comfort.ViewModels
 {
@@ -21,6 +23,7 @@ namespace Comfort.ViewModels
         public ICommand EditProductCommand { get; }
         public ICommand DeleteProductCommand { get; }
         public ICommand ShowWorkshopsCommand { get; }
+        public ICommand ShowRawMaterialCalculationCommand { get; }
 
         public ProductViewModel(MainWindowViewModel mainViewModel)
         {
@@ -31,6 +34,7 @@ namespace Comfort.ViewModels
             EditProductCommand = new RelayCommand<Product>(EditProduct);
             DeleteProductCommand = new RelayCommand<Product>(DeleteProduct);
             ShowWorkshopsCommand = new RelayCommand<Product>(ShowWorkshops);
+            ShowRawMaterialCalculationCommand = new RelayCommand<Product>(ShowRawMaterialCalculation);
 
             LoadProducts();
         }
@@ -89,17 +93,13 @@ namespace Comfort.ViewModels
                     {
                         db.Products.Remove(product);
                         db.SaveChanges();
+                        Products.Remove(product);
                     }
-                    Products.Remove(product);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(
-                        $"Ошибка при удалении продукта: {ex.Message}",
-                        "Ошибка",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Error
-                    );
+                    _mainViewModel.ServiceProvider.GetRequiredService<IErrorHandlingService>().LogError(ex, "Ошибка при удалении продукта");
+                    MessageBox.Show($"Ошибка при удалении продукта: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
@@ -107,12 +107,24 @@ namespace Comfort.ViewModels
         private void ShowWorkshops(Product product)
         {
             if (product == null) return;
-
-            var workshopView = new WorkshopView();
-            var workshopViewModel = App.Services.GetRequiredService<WorkshopListViewModel>();
+            var workshopViewModel = _mainViewModel.ServiceProvider.GetRequiredService<WorkshopListViewModel>();
             workshopViewModel.SelectedProductId = product.ProductID;
-            workshopView.DataContext = workshopViewModel;
+            var workshopView = new WorkshopView
+            {
+                DataContext = workshopViewModel
+            };
             _mainViewModel.NavigateTo(workshopView);
+        }
+
+        private void ShowRawMaterialCalculation(Product product)
+        {
+            var rawMaterialCalculationViewModel = _mainViewModel.ServiceProvider.GetRequiredService<RawMaterialCalculationViewModel>();
+            rawMaterialCalculationViewModel.SelectedProduct = product;
+            var rawMaterialCalculationView = new RawMaterialCalculationView
+            {
+                DataContext = rawMaterialCalculationViewModel
+            };
+            _mainViewModel.NavigateTo(rawMaterialCalculationView);
         }
     }
 } 

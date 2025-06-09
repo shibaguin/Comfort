@@ -67,6 +67,11 @@
                                                 CommandParameter="{Binding}"
                                                 Style="{StaticResource ActionButtonStyle}"
                                                 FontSize="14" Width="32" Height="32" Padding="0" Margin="0,0,8,0"/>
+                                        <Button Content="🧮" ToolTip="Рассчитать сырье"
+                                                Command="{Binding DataContext.ShowRawMaterialCalculationCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                Style="{StaticResource ActionButtonStyle}"
+                                                FontSize="14" Width="32" Height="32" Padding="0" Margin="0,0,8,0"/>
                                         <Button Content="🗑️" ToolTip="Удалить"
                                                 Command="{Binding DataContext.DeleteProductCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                 CommandParameter="{Binding}"

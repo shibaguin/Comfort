@@ -1,0 +1,114 @@
+<UserControl x:Class="Comfort.Views.RawMaterialCalculationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Comfort.Views"
+             xmlns:converters="clr-namespace:Comfort.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/AppStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <converters:NullOrNegativeToVisibilityConverter x:Key="NullOrNegativeToVisibilityConverter"/>
+            <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+            <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <ScrollViewer>
+        <StackPanel Margin="16">
+            <!-- Верхняя панель с заголовком и кнопкой "Назад" -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Расчет необходимого сырья" Style="{StaticResource HeaderStyle}"/>
+                <Button Grid.Column="1" 
+                        Content="Назад" 
+                        Command="{Binding DataContext.NavigateBackCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                        Style="{StaticResource ActionButtonStyle}"
+                        HorizontalAlignment="Right"
+                        Margin="0,0,0,12" Width="100" Height="32" Padding="0"/>
+            </Grid>
+
+            <!-- Информация о выбранном продукте -->
+            <TextBlock Text="{Binding SelectedProduct.ProductName, StringFormat='Выбранный продукт: {0}'}"
+                       Margin="0,16,0,0"
+                       Visibility="{Binding SelectedProduct, Converter={StaticResource NullToVisibilityConverter}}"
+                       FontWeight="SemiBold" FontSize="16"/>
+
+            <Grid Margin="0,16,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Тип продукции:"/>
+                <ComboBox Grid.Row="0" Grid.Column="1" 
+                          ItemsSource="{Binding ProductTypes}" 
+                          DisplayMemberPath="ProductTypeName" 
+                          SelectedValuePath="ProductTypeID"
+                          SelectedValue="{Binding SelectedProductTypeId}"
+                          Style="{StaticResource {x:Type ComboBox}}"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Тип материала:"/>
+                <ComboBox Grid.Row="1" Grid.Column="1" 
+                          ItemsSource="{Binding Materials}" 
+                          DisplayMemberPath="MaterialName" 
+                          SelectedValuePath="MaterialID"
+                          SelectedValue="{Binding SelectedMaterialId}"
+                          Style="{StaticResource {x:Type ComboBox}}"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Количество продукции:"/>
+                <TextBox Grid.Row="2" Grid.Column="1" 
+                         Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Величина 1 (см):"/>
+                <TextBox Grid.Row="3" Grid.Column="1" 
+                         Text="{Binding Param1, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Величина 2 (см):"/>
+                <TextBox Grid.Row="4" Grid.Column="1" 
+                         Text="{Binding Param2, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <!-- Примечание под размерами -->
+                <TextBlock Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
+                           Text="Примечание: Величины вводятся в сантиметрах. Количество сырья рассчитывается как произведение величин, умноженное на коэффициент типа продукции и количество изделий, с учетом процента потерь материала."
+                           Margin="0,16,0,0"
+                           TextWrapping="Wrap"
+                           Foreground="Gray"
+                           FontStyle="Italic"/>
+
+                <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" 
+                        Content="Рассчитать сырье" 
+                        Command="{Binding CalculateCommand}" 
+                        Margin="0,16,0,0"/>
+
+                <!-- Выделение итогового результата -->
+                <TextBlock Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" 
+                           Text="{Binding Result, StringFormat='Необходимое количество сырья: {0}'}" 
+                           Margin="0,16,0,0"
+                           Visibility="{Binding Result, Converter={StaticResource NullOrNegativeToVisibilityConverter}}"
+                           FontSize="24" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
+            </Grid>
+
+            <TextBlock Text="{Binding ErrorMessage}" 
+                       Foreground="Red" 
+                       Margin="0,16,0,0"
+                       Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl> 

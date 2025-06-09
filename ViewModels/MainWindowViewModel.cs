@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using Comfort.Views;
 using System.Collections.Generic;
 using System.Windows.Input;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Comfort.ViewModels
 {
@@ -50,11 +51,13 @@ namespace Comfort.ViewModels
         }
 
         private readonly Stack<UserControl> _navigationStack;
+        public IServiceProvider ServiceProvider { get; }
 
         public ICommand NavigateBackCommand { get; }
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(IServiceProvider serviceProvider)
         {
+            ServiceProvider = serviceProvider;
             _navigationStack = new Stack<UserControl>();
             
             // Изначально открываем ProductView
@@ -79,6 +82,7 @@ namespace Comfort.ViewModels
                 ProductView => "Продукты",
                 WorkshopView => "Цеха производства",
                 ProductEditView => "Редактирование продукта",
+                RawMaterialCalculationView => "Расчет сырья",
                 _ => "Комфорт"
             };
         }

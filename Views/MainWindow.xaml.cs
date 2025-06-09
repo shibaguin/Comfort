@@ -20,9 +20,9 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        var vm = new MainWindowViewModel();
+        var vm = new MainWindowViewModel(App.Services);
         DataContext = vm;
-        ProductView productView = new ProductView(vm);
+        var productView = new ProductView(vm);
         vm.CurrentView = productView;
     }
 }

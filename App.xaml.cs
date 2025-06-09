@@ -96,6 +96,9 @@ public partial class App : Application
             services.AddSingleton<IErrorHandlingService, ErrorHandlingService>();
             services.AddSingleton<IWorkshopService, WorkshopService>();
             services.AddTransient<WorkshopListViewModel>();
+            services.AddTransient<RawMaterialCalculationViewModel>();
+            services.AddTransient<ProductViewModel>();
+            services.AddTransient<ProductEditViewModel>();
             
             // Настройка системы логирования
             services.AddLogging(builder =>
