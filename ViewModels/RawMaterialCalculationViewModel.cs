@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Comfort.ViewModels
 {
+    // ViewModel для расчета необходимого количества сырья для производства
     public class RawMaterialCalculationViewModel : BaseViewModel
     {
         private readonly IWorkshopService _workshopService;
@@ -41,6 +42,7 @@ namespace Comfort.ViewModels
             _ = LoadData();
         }
 
+        // Выбранный продукт, при выборе автоматически заполняются связанные поля
         public Product? SelectedProduct
         {
             get => _selectedProduct;
@@ -51,8 +53,8 @@ namespace Comfort.ViewModels
                 {
                     SelectedProductTypeId = _selectedProduct.ProductTypeID;
                     SelectedMaterialId = _selectedProduct.MainMaterialID;
-                    Quantity = 1; // Устанавливаем начальное количество
-                    Param1 = 1; // Устанавливаем начальные параметры
+                    Quantity = 1;
+                    Param1 = 1;
                     Param2 = 1;
                 }
                 OnPropertyChanged();
@@ -60,8 +62,10 @@ namespace Comfort.ViewModels
             }
         }
 
+        // Флаг наличия выбранного продукта
         public bool IsProductSelected => SelectedProduct != null;
 
+        // Коллекция типов продуктов для выбора
         public ObservableCollection<ProductType> ProductTypes
         {
             get => _productTypes;
@@ -72,6 +76,7 @@ namespace Comfort.ViewModels
             }
         }
 
+        // Коллекция материалов для выбора
         public ObservableCollection<Material> Materials
         {
             get => _materials;
@@ -82,6 +87,7 @@ namespace Comfort.ViewModels
             }
         }
 
+        // ID выбранного типа продукта
         public int SelectedProductTypeId
         {
             get => _selectedProductTypeId;
@@ -93,6 +99,7 @@ namespace Comfort.ViewModels
             }
         }
 
+        // ID выбранного материала
         public int SelectedMaterialId
         {
             get => _selectedMaterialId;
@@ -104,6 +111,7 @@ namespace Comfort.ViewModels
             }
         }
 
+        // Количество единиц для расчета
         public int Quantity
         {
             get => _quantity;
@@ -115,6 +123,7 @@ namespace Comfort.ViewModels
             }
         }
 
+        // Первый параметр для расчета
         public double Param1
         {
             get => _param1;
@@ -126,6 +135,7 @@ namespace Comfort.ViewModels
             }
         }
 
+        // Второй параметр для расчета
         public double Param2
         {
             get => _param2;
@@ -137,6 +147,7 @@ namespace Comfort.ViewModels
             }
         }
 
+        // Результат расчета количества сырья
         public int Result
         {
             get => _result;
@@ -147,6 +158,7 @@ namespace Comfort.ViewModels
             }
         }
 
+        // Сообщение об ошибке для отображения пользователю
         public string ErrorMessage
         {
             get => _errorMessage;
@@ -157,6 +169,7 @@ namespace Comfort.ViewModels
             }
         }
 
+        // Флаг загрузки данных
         public bool IsLoading
         {
             get => _isLoading;
@@ -168,12 +181,14 @@ namespace Comfort.ViewModels
             }
         }
 
+        // Команда для запуска расчета
         public ICommand CalculateCommand { get; }
 
+        // Загрузка списков типов продуктов и материалов из базы данных
         private async Task LoadData()
         {
             IsLoading = true;
-            ErrorMessage = string.Empty; // Очищаем предыдущие сообщения об ошибках
+            ErrorMessage = string.Empty;
             _logger.Information("Attempting to load ProductTypes and Materials for RawMaterialCalculationViewModel.");
             try
             {
@@ -200,11 +215,13 @@ namespace Comfort.ViewModels
             }
         }
 
+        // Проверка возможности выполнения расчета
         private bool CanCalculate()
         {
             return !IsLoading && SelectedProductTypeId > 0 && SelectedMaterialId > 0 && Quantity > 0 && Param1 > 0 && Param2 > 0;
         }
 
+        // Выполнение расчета необходимого количества сырья
         private async Task CalculateRawMaterials()
         {
             IsLoading = true;

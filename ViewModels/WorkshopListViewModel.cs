@@ -10,6 +10,7 @@ using Comfort.Models;
 
 namespace Comfort.ViewModels
 {
+    // ViewModel для управления списком цехов и их связями с продуктами
     public class WorkshopListViewModel : BaseViewModel
     {
         private readonly IWorkshopService _workshopService;
@@ -36,9 +37,12 @@ namespace Comfort.ViewModels
             LoadProducts();
         }
 
+        // Коллекция цехов для выбранного продукта
         public ObservableCollection<WorkshopInfo> Workshops { get; }
+        // Коллекция всех продуктов для выбора
         public ObservableCollection<Product> Products { get; }
 
+        // ID выбранного продукта, при изменении автоматически загружаются связанные цеха
         public int SelectedProductId
         {
             get => _selectedProductId;
@@ -53,6 +57,7 @@ namespace Comfort.ViewModels
             }
         }
 
+        // Флаг загрузки данных
         public bool IsLoading
         {
             get => _isLoading;
@@ -67,6 +72,7 @@ namespace Comfort.ViewModels
             }
         }
 
+        // Сообщение об ошибке для отображения пользователю
         public string ErrorMessage
         {
             get => _errorMessage;
@@ -80,8 +86,10 @@ namespace Comfort.ViewModels
             }
         }
 
+        // Команда для обновления списка цехов
         public ICommand LoadWorkshopsCommand { get; }
 
+        // Загрузка списка всех продуктов из базы данных
         private void LoadProducts()
         {
             try
@@ -105,6 +113,7 @@ namespace Comfort.ViewModels
             }
         }
 
+        // Асинхронная загрузка цехов для выбранного продукта
         private async Task LoadWorkshops()
         {
             if (SelectedProductId <= 0)

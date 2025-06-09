@@ -13,12 +13,15 @@ using Serilog;
 
 namespace Comfort.ViewModels
 {
+    // ViewModel для управления списком продуктов и операциями с ними
     public class ProductViewModel : BaseViewModel
     {
         private readonly MainWindowViewModel _mainViewModel;
         public MainWindowViewModel MainViewModel => _mainViewModel;
+        // Коллекция продуктов для отображения в интерфейсе
         public ObservableCollection<Product> Products { get; set; }
 
+        // Команды для управления продуктами
         public ICommand AddProductCommand { get; }
         public ICommand EditProductCommand { get; }
         public ICommand DeleteProductCommand { get; }
@@ -39,6 +42,7 @@ namespace Comfort.ViewModels
             LoadProducts();
         }
 
+        // Загрузка списка продуктов из базы данных с включением связанных данных
         public void LoadProducts()
         {
             using (var db = new ApplicationDbContext())
@@ -54,6 +58,7 @@ namespace Comfort.ViewModels
             OnPropertyChanged(nameof(Products));
         }
 
+        // Открытие окна создания нового продукта
         private void AddProduct()
         {
             var newProduct = new Product();
@@ -64,6 +69,7 @@ namespace Comfort.ViewModels
             _mainViewModel.NavigateTo(editView);
         }
 
+        // Открытие окна редактирования существующего продукта
         private void EditProduct(Product product)
         {
             if (product == null) return;
@@ -74,6 +80,7 @@ namespace Comfort.ViewModels
             _mainViewModel.NavigateTo(editView);
         }
 
+        // Удаление продукта с подтверждением
         private void DeleteProduct(Product product)
         {
             if (product == null) return;
@@ -104,6 +111,7 @@ namespace Comfort.ViewModels
             }
         }
 
+        // Открытие окна управления цехами для выбранного продукта
         private void ShowWorkshops(Product product)
         {
             if (product == null) return;
@@ -116,6 +124,7 @@ namespace Comfort.ViewModels
             _mainViewModel.NavigateTo(workshopView);
         }
 
+        // Открытие окна расчета сырья для выбранного продукта
         private void ShowRawMaterialCalculation(Product product)
         {
             var rawMaterialCalculationViewModel = _mainViewModel.ServiceProvider.GetRequiredService<RawMaterialCalculationViewModel>();
