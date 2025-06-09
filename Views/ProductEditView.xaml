@@ -1,0 +1,59 @@
+<UserControl x:Class="Comfort.Views.ProductEditView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Comfort.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary Source="/Resources/AppStyles.xaml"/>
+    </UserControl.Resources>
+    <ScrollViewer>
+        <StackPanel Margin="16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding Title}" Style="{StaticResource HeaderStyle}"/>
+                <Button Grid.Column="1" 
+                        Content="Назад" 
+                        Command="{Binding DataContext.NavigateBackCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                        Style="{StaticResource ActionButtonStyle}"
+                        Width="70" Height="32" Padding="0"/>
+            </Grid>
+            
+            <Label Content="Артикул"/>
+            <TextBox Text="{Binding Product.Article, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="Введите уникальный артикул продукта"/>
+            
+            <Label Content="Тип продукта"/>
+            <ComboBox ItemsSource="{Binding ProductTypes}"
+                      SelectedValue="{Binding Product.ProductTypeID}"
+                      SelectedValuePath="ProductTypeID"
+                      DisplayMemberPath="ProductTypeName"
+                      ToolTip="Выберите тип продукта из списка"/>
+            
+            <Label Content="Наименование"/>
+            <TextBox Text="{Binding Product.ProductName, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="Введите наименование продукта"/>
+            
+            <Label Content="Минимальная стоимость для партнера"/>
+            <TextBox Text="{Binding Product.MinPartnerCost, StringFormat=N2, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="Введите стоимость с точностью до копеек"/>
+            
+            <Label Content="Основной материал"/>
+            <ComboBox ItemsSource="{Binding Materials}"
+                      SelectedValue="{Binding Product.MainMaterialID}"
+                      SelectedValuePath="MaterialID"
+                      DisplayMemberPath="MaterialName"
+                      ToolTip="Выберите основной материал из списка"/>
+            
+            <Button Content="Сохранить" 
+                    Command="{Binding SaveCommand}"
+                    Style="{StaticResource ActionButtonStyle}"
+                    Margin="0,16,0,0"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl> 

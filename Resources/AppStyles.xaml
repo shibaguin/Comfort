@@ -28,7 +28,8 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="4">
+                            CornerRadius="4"
+                            Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="Center" 
                                         VerticalAlignment="Center"/>
                     </Border>
@@ -42,6 +43,43 @@
         <Setter Property="FontSize" Value="24"/>
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="Margin" Value="0,0,0,20"/>
+    </Style>
+
+    <!-- Стили для TextBox -->
+    <Style TargetType="TextBox">
+        <Setter Property="Padding" Value="8,6"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="#CCCCCC"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Margin" Value="0,0,0,10"/>
+    </Style>
+
+    <!-- Стили для ComboBox -->
+    <Style TargetType="ComboBox">
+        <Setter Property="Padding" Value="8,6"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="#CCCCCC"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Margin" Value="0,0,0,10"/>
+    </Style>
+
+    <!-- Стили для меток -->
+    <Style TargetType="Label">
+        <Setter Property="Margin" Value="0,0,0,5"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+
+    <!-- Стили для кнопок действий -->
+    <Style x:Key="ActionButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="Margin" Value="0,0,10,0"/>
+        <Setter Property="Padding" Value="20,10"/>
+    </Style>
+
+    <!-- Стили для панели кнопок -->
+    <Style x:Key="ButtonPanelStyle" TargetType="StackPanel">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="Margin" Value="0,20,0,0"/>
     </Style>
 
 </ResourceDictionary> 
