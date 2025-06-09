@@ -16,7 +16,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{Binding Title}" Style="{StaticResource HeaderStyle}"/>
+                <TextBlock Text="Редактирование параметров продукта" Style="{StaticResource HeaderStyle}"/>
                 <Button Grid.Column="1" 
                         Content="Назад" 
                         Command="{Binding DataContext.NavigateBackCommand, RelativeSource={RelativeSource AncestorType=Window}}"

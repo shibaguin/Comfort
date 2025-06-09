@@ -16,7 +16,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Продукты" Style="{StaticResource HeaderStyle}"/>
+                <TextBlock Text="Управление каталогом продукции" Style="{StaticResource HeaderStyle}"/>
                 <Button Grid.Column="1" 
                         Content="Добавить продукт" 
                         Command="{Binding AddProductCommand}"

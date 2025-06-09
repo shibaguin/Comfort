@@ -16,6 +16,29 @@ namespace Comfort.ViewModels
             {
                 _currentView = value;
                 OnPropertyChanged();
+                UpdateTitles();
+            }
+        }
+
+        private string _windowTitle = "Комфорт";
+        public string WindowTitle
+        {
+            get => _windowTitle;
+            set
+            {
+                _windowTitle = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _headerTitle = "Комфорт";
+        public string HeaderTitle
+        {
+            get => _headerTitle;
+            set
+            {
+                _headerTitle = value;
+                OnPropertyChanged();
             }
         }
 
@@ -40,6 +63,24 @@ namespace Comfort.ViewModels
             _navigationStack.Push(productView);
 
             NavigateBackCommand = new RelayCommand(NavigateBack, CanNavigateBack);
+        }
+
+        private void UpdateTitles()
+        {
+            string pageTitle = GetPageTitle(_currentView);
+            WindowTitle = $"Комфорт - {pageTitle}";
+            HeaderTitle = pageTitle;
+        }
+
+        private string GetPageTitle(UserControl view)
+        {
+            return view switch
+            {
+                ProductView => "Продукты",
+                WorkshopView => "Цеха производства",
+                ProductEditView => "Редактирование продукта",
+                _ => "Комфорт"
+            };
         }
 
         public void NavigateTo(UserControl view)

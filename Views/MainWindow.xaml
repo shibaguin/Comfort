@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Comfort.Views"
         mc:Ignorable="d"
-        Title="Комфорт" Height="650" Width="1000" WindowStartupLocation="CenterScreen">
+        Title="{Binding WindowTitle}" Height="650" Width="1000" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <ResourceDictionary Source="/Resources/AppStyles.xaml"/>
     </Window.Resources>
@@ -18,7 +18,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Image Source="/Resources/Комфорт.png" Width="40" Height="40" Margin="8"/>
-                <TextBlock Grid.Column="1" VerticalAlignment="Center" Foreground="White" FontSize="22" FontWeight="SemiBold" Text="Комфорт"/>
+                <TextBlock Grid.Column="1" VerticalAlignment="Center" Foreground="White" FontSize="22" FontWeight="SemiBold" Text="{Binding HeaderTitle}"/>
             </Grid>
         </Border>
         <!-- Main Content -->
