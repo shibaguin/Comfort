@@ -11,37 +11,49 @@
     </UserControl.Resources>
     <ScrollViewer>
         <StackPanel Margin="16">
-            <TextBlock Text="{Binding Title}" Style="{StaticResource HeaderStyle}"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding Title}" Style="{StaticResource HeaderStyle}"/>
+                <Button Grid.Column="1" 
+                        Content="Назад" 
+                        Command="{Binding DataContext.NavigateBackCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                        Style="{StaticResource ActionButtonStyle}"
+                        Width="70" Height="32" Padding="0"/>
+            </Grid>
             
             <Label Content="Артикул"/>
-            <TextBox Text="{Binding Product.Article, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Text="{Binding Product.Article, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="Введите уникальный артикул продукта"/>
             
             <Label Content="Тип продукта"/>
             <ComboBox ItemsSource="{Binding ProductTypes}"
                       SelectedValue="{Binding Product.ProductTypeID}"
                       SelectedValuePath="ProductTypeID"
-                      DisplayMemberPath="ProductTypeName"/>
+                      DisplayMemberPath="ProductTypeName"
+                      ToolTip="Выберите тип продукта из списка"/>
             
             <Label Content="Наименование"/>
-            <TextBox Text="{Binding Product.ProductName, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Text="{Binding Product.ProductName, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="Введите наименование продукта"/>
             
             <Label Content="Минимальная стоимость для партнера"/>
-            <TextBox Text="{Binding Product.MinPartnerCost, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Text="{Binding Product.MinPartnerCost, StringFormat=N2, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="Введите стоимость с точностью до копеек"/>
             
             <Label Content="Основной материал"/>
             <ComboBox ItemsSource="{Binding Materials}"
                       SelectedValue="{Binding Product.MainMaterialID}"
                       SelectedValuePath="MaterialID"
-                      DisplayMemberPath="MaterialName"/>
+                      DisplayMemberPath="MaterialName"
+                      ToolTip="Выберите основной материал из списка"/>
             
-            <StackPanel Style="{StaticResource ButtonPanelStyle}">
-                <Button Content="Сохранить" 
-                        Command="{Binding SaveCommand}"
-                        Style="{StaticResource ActionButtonStyle}"/>
-                <Button Content="Отмена" 
-                        Command="{Binding CancelCommand}"
-                        Style="{StaticResource ActionButtonStyle}"/>
-            </StackPanel>
+            <Button Content="Сохранить" 
+                    Command="{Binding SaveCommand}"
+                    Style="{StaticResource ActionButtonStyle}"
+                    Margin="0,16,0,0"/>
         </StackPanel>
     </ScrollViewer>
 </UserControl> 

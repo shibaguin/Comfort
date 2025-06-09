@@ -49,15 +49,21 @@ namespace Comfort.ViewModels
         private void AddProduct()
         {
             var newProduct = new Product();
-            var editWindow = new ProductEditWindow(newProduct, this);
-            editWindow.ShowDialog();
+            var editView = new ProductEditView
+            {
+                DataContext = new ProductEditViewModel(newProduct, this, _mainViewModel)
+            };
+            _mainViewModel.NavigateTo(editView);
         }
 
         private void EditProduct(Product product)
         {
             if (product == null) return;
-            var editWindow = new ProductEditWindow(product, this);
-            editWindow.ShowDialog();
+            var editView = new ProductEditView
+            {
+                DataContext = new ProductEditViewModel(product, this, _mainViewModel)
+            };
+            _mainViewModel.NavigateTo(editView);
         }
 
         private void DeleteProduct(Product product)
