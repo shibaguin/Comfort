@@ -90,6 +90,7 @@ public partial class App : Application
             services.AddSingleton<IDatabaseService, DatabaseService>();
             services.AddSingleton(Log.Logger); // Регистрируем глобальный логгер
             services.AddSingleton<IErrorHandlingService, ErrorHandlingService>();
+            services.AddSingleton<IWorkshopService, WorkshopService>();
             
             // Настройка системы логирования
             services.AddLogging(builder =>

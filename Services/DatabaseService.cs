@@ -2,6 +2,9 @@ using System.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Comfort.Models;
+using System.Data;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Comfort.Services;
 
@@ -10,6 +13,7 @@ public interface IDatabaseService
 {
     Task<bool> TestConnectionAsync();
     ApplicationDbContext CreateDbContext();
+    Task<DataTable> ExecuteQueryAsync(string query, Dictionary<string, object> parameters);
 }
 
 // Реализация сервиса базы данных
@@ -51,6 +55,31 @@ public class DatabaseService : IDatabaseService
         catch (Exception ex)
         {
             _errorHandling.LogError(ex, "Ошибка при создании контекста базы данных");
+            throw;
+        }
+    }
+
+    public async Task<DataTable> ExecuteQueryAsync(string query, Dictionary<string, object> parameters)
+    {
+        try
+        {
+            using var connection = new Microsoft.Data.SqlClient.SqlConnection(_connectionString);
+            using var command = new Microsoft.Data.SqlClient.SqlCommand(query, connection);
+            
+            foreach (var param in parameters)
+            {
+                command.Parameters.AddWithValue(param.Key, param.Value);
+            }
+
+            var dataTable = new DataTable();
+            using var adapter = new Microsoft.Data.SqlClient.SqlDataAdapter(command);
+            await Task.Run(() => adapter.Fill(dataTable));
+            
+            return dataTable;
+        }
+        catch (Exception ex)
+        {
+            _errorHandling.LogError(ex, "Ошибка при выполнении запроса к БД");
             throw;
         }
     }
