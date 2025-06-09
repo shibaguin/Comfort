@@ -3,6 +3,7 @@ using System.Windows.Input;
 
 namespace Comfort.ViewModels
 {
+    // Реализация команды без параметров для использования в MVVM
     public class RelayCommand : ICommand
     {
         private readonly Action _execute;
@@ -25,6 +26,7 @@ namespace Comfort.ViewModels
         public void Execute(object? parameter) => _execute();
     }
 
+    // Реализация команды с параметром типа T для использования в MVVM
     public class RelayCommand<T> : ICommand
     {
         private readonly Action<T> _execute;

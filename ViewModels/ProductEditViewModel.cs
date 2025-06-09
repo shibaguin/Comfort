@@ -9,9 +9,7 @@ using Comfort.Views;
 
 namespace Comfort.ViewModels
 {
-    /// <summary>
-    /// ViewModel для формы редактирования продукта
-    /// </summary>
+    // ViewModel для формы редактирования продукта
     public class ProductEditViewModel : BaseViewModel
     {
         private readonly Product _originalProduct; // Ссылка на исходный объект продукта
@@ -19,7 +17,8 @@ namespace Comfort.ViewModels
 
         // Заголовок формы зависит от режима (добавление/редактирование)
         public string Title => _originalProduct.ProductID == 0 ? "Новый продукт" : "Редактирование продукта";
-        public Product Product // Свойство, к которому привязывается UI
+        // Свойство, к которому привязывается UI
+        public Product Product
         {
             get => _editableProduct;
             set
@@ -36,6 +35,7 @@ namespace Comfort.ViewModels
         public ObservableCollection<ProductType> ProductTypes { get; }
         public ObservableCollection<Material> Materials { get; }
 
+        // Команды для сохранения и отмены изменений
         public ICommand SaveCommand { get; }
         public ICommand CancelCommand { get; }
 
@@ -45,14 +45,14 @@ namespace Comfort.ViewModels
             _parentViewModel = parentViewModel;
             _mainViewModel = mainViewModel;
 
-            // Создаем копию продукта для редактирования. Если это новый продукт, используем его напрямую.
+            // Создаем копию продукта для редактирования
             if (_originalProduct.ProductID == 0)
             {
-                _editableProduct = _originalProduct; // Для нового продукта _originalProduct уже является новой инстанцией
+                _editableProduct = _originalProduct;
             }
             else
             {
-                // Копируем свойства существующего продукта в новую инстанцию для редактирования
+                // Копируем свойства существующего продукта для редактирования
                 _editableProduct = new Product
                 {
                     ProductID = _originalProduct.ProductID,
@@ -61,7 +61,6 @@ namespace Comfort.ViewModels
                     MinPartnerCost = _originalProduct.MinPartnerCost,
                     ProductTypeID = _originalProduct.ProductTypeID,
                     MainMaterialID = _originalProduct.MainMaterialID
-                    // Навигационные свойства не копируем, так как они будут подгружены при сохранении или refresh'е
                 };
             }
 
@@ -76,9 +75,7 @@ namespace Comfort.ViewModels
             }
         }
 
-        /// <summary>
-        /// Сохранение продукта в базу данных
-        /// </summary>
+        // Сохранение продукта в базу данных с валидацией
         private void Save()
         {
             // Валидация обязательных полей
@@ -107,7 +104,7 @@ namespace Comfort.ViewModels
                 {
                     if (_originalProduct.ProductID == 0) // Новый продукт
                     {
-                        db.Products.Add(Product); // Добавляем отредактированную копию
+                        db.Products.Add(Product);
                     }
                     else // Существующий продукт
                     {
@@ -118,12 +115,12 @@ namespace Comfort.ViewModels
                         _originalProduct.ProductTypeID = Product.ProductTypeID;
                         _originalProduct.MainMaterialID = Product.MainMaterialID;
 
-                        db.Products.Update(_originalProduct); // Обновляем исходный объект
+                        db.Products.Update(_originalProduct);
                     }
                     db.SaveChanges();
                 }
 
-                // Обновляем список продуктов в родительском окне
+                // Обновляем список продуктов и возвращаемся назад
                 _parentViewModel.LoadProducts();
                 _mainViewModel.NavigateBack();
             }
@@ -138,9 +135,7 @@ namespace Comfort.ViewModels
             }
         }
 
-        /// <summary>
-        /// Возврат к предыдущей странице без сохранения изменений
-        /// </summary>
+        // Возврат к предыдущей странице без сохранения изменений
         private void Cancel()
         {
             _mainViewModel.NavigateBack();

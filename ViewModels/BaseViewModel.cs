@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Comfort.ViewModels
 {
+    // Базовый класс для всех ViewModel, реализующий интерфейс INotifyPropertyChanged для поддержки привязки данных
     public class BaseViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;

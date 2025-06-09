@@ -4,6 +4,7 @@ using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Comfort.Services;
+using Comfort.ViewModels;
 using Serilog;
 using Serilog.Events;
 using Serilog.Extensions.Logging;
@@ -17,6 +18,9 @@ public partial class App : Application
     // Провайдер сервисов для внедрения зависимостей
     private ServiceProvider _serviceProvider = null!;
     private IErrorHandlingService _errorHandling = null!;
+
+    // Свойство для доступа к сервисам
+    public static IServiceProvider Services => ((App)Current)._serviceProvider;
 
     // Инициализация приложения
     public App()
@@ -90,6 +94,11 @@ public partial class App : Application
             services.AddSingleton<IDatabaseService, DatabaseService>();
             services.AddSingleton(Log.Logger); // Регистрируем глобальный логгер
             services.AddSingleton<IErrorHandlingService, ErrorHandlingService>();
+            services.AddSingleton<IWorkshopService, WorkshopService>();
+            services.AddTransient<WorkshopListViewModel>();
+            services.AddTransient<RawMaterialCalculationViewModel>();
+            services.AddTransient<ProductViewModel>();
+            services.AddTransient<ProductEditViewModel>();
             
             // Настройка системы логирования
             services.AddLogging(builder =>

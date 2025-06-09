@@ -6,18 +6,27 @@ using System.Windows.Input;
 using System.Windows;
 using System;
 using Comfort.Views;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Comfort.Services;
+using Serilog;
 
 namespace Comfort.ViewModels
 {
+    // ViewModel для управления списком продуктов и операциями с ними
     public class ProductViewModel : BaseViewModel
     {
         private readonly MainWindowViewModel _mainViewModel;
         public MainWindowViewModel MainViewModel => _mainViewModel;
+        // Коллекция продуктов для отображения в интерфейсе
         public ObservableCollection<Product> Products { get; set; }
 
+        // Команды для управления продуктами
         public ICommand AddProductCommand { get; }
         public ICommand EditProductCommand { get; }
         public ICommand DeleteProductCommand { get; }
+        public ICommand ShowWorkshopsCommand { get; }
+        public ICommand ShowRawMaterialCalculationCommand { get; }
 
         public ProductViewModel(MainWindowViewModel mainViewModel)
         {
@@ -27,10 +36,13 @@ namespace Comfort.ViewModels
             AddProductCommand = new RelayCommand(AddProduct);
             EditProductCommand = new RelayCommand<Product>(EditProduct);
             DeleteProductCommand = new RelayCommand<Product>(DeleteProduct);
+            ShowWorkshopsCommand = new RelayCommand<Product>(ShowWorkshops);
+            ShowRawMaterialCalculationCommand = new RelayCommand<Product>(ShowRawMaterialCalculation);
 
             LoadProducts();
         }
 
+        // Загрузка списка продуктов из базы данных с включением связанных данных
         public void LoadProducts()
         {
             using (var db = new ApplicationDbContext())
@@ -46,6 +58,7 @@ namespace Comfort.ViewModels
             OnPropertyChanged(nameof(Products));
         }
 
+        // Открытие окна создания нового продукта
         private void AddProduct()
         {
             var newProduct = new Product();
@@ -56,6 +69,7 @@ namespace Comfort.ViewModels
             _mainViewModel.NavigateTo(editView);
         }
 
+        // Открытие окна редактирования существующего продукта
         private void EditProduct(Product product)
         {
             if (product == null) return;
@@ -66,6 +80,7 @@ namespace Comfort.ViewModels
             _mainViewModel.NavigateTo(editView);
         }
 
+        // Удаление продукта с подтверждением
         private void DeleteProduct(Product product)
         {
             if (product == null) return;
@@ -85,19 +100,40 @@ namespace Comfort.ViewModels
                     {
                         db.Products.Remove(product);
                         db.SaveChanges();
+                        Products.Remove(product);
                     }
-                    Products.Remove(product);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(
-                        $"Ошибка при удалении продукта: {ex.Message}",
-                        "Ошибка",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Error
-                    );
+                    _mainViewModel.ServiceProvider.GetRequiredService<IErrorHandlingService>().LogError(ex, "Ошибка при удалении продукта");
+                    MessageBox.Show($"Ошибка при удалении продукта: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+        }
+
+        // Открытие окна управления цехами для выбранного продукта
+        private void ShowWorkshops(Product product)
+        {
+            if (product == null) return;
+            var workshopViewModel = _mainViewModel.ServiceProvider.GetRequiredService<WorkshopListViewModel>();
+            workshopViewModel.SelectedProductId = product.ProductID;
+            var workshopView = new WorkshopView
+            {
+                DataContext = workshopViewModel
+            };
+            _mainViewModel.NavigateTo(workshopView);
+        }
+
+        // Открытие окна расчета сырья для выбранного продукта
+        private void ShowRawMaterialCalculation(Product product)
+        {
+            var rawMaterialCalculationViewModel = _mainViewModel.ServiceProvider.GetRequiredService<RawMaterialCalculationViewModel>();
+            rawMaterialCalculationViewModel.SelectedProduct = product;
+            var rawMaterialCalculationView = new RawMaterialCalculationView
+            {
+                DataContext = rawMaterialCalculationViewModel
+            };
+            _mainViewModel.NavigateTo(rawMaterialCalculationView);
         }
     }
 } 
