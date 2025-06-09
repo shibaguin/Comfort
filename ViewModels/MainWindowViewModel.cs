@@ -13,7 +13,7 @@ namespace Comfort.ViewModels
             set { _windowTitle = value; OnPropertyChanged(); }
         }
 
-        private UserControl _currentView;
+        private UserControl _currentView = null!;
         public UserControl CurrentView
         {
             get => _currentView;

@@ -14,7 +14,7 @@ namespace Comfort;
 public partial class App : Application
 {
     // Провайдер сервисов для внедрения зависимостей
-    private ServiceProvider _serviceProvider;
+    private ServiceProvider _serviceProvider = null!;
 
     // Конструктор приложения. Инициализирует все необходимые компоненты
     public App()
@@ -156,7 +156,7 @@ public partial class App : Application
     }
 
     // Обработчик необработанных исключений в асинхронных задачах
-    private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+    private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
     {
         // Логируем ошибку в задаче
         Log.Error(e.Exception, "Необработанное исключение в задаче");
