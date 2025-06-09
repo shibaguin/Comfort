@@ -6,12 +6,21 @@
              xmlns:local="clr-namespace:Comfort.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary Source="/Resources/AppStyles.xaml"/>
+    </UserControl.Resources>
     <ScrollViewer>
         <StackPanel Margin="16">
+            <TextBlock Text="Продукты" Style="{StaticResource HeaderStyle}"/>
             <ItemsControl ItemsSource="{Binding Products}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderBrush="#C4C4C4" BorderThickness="1" CornerRadius="6" Margin="0 0 0 16" Padding="16">
+                        <Border Background="{StaticResource SecondaryBackgroundBrush}" 
+                                BorderBrush="{StaticResource AccentBrush}" 
+                                BorderThickness="1" 
+                                CornerRadius="6" 
+                                Margin="0 0 0 16" 
+                                Padding="16">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -27,7 +36,12 @@
                                     <TextBlock FontSize="14" Foreground="#444" Text="{Binding MinPartnerCost, StringFormat='Минимальная стоимость для партнера: {0:C}'}"/>
                                     <TextBlock FontSize="14" Foreground="#444" Text="{Binding MainMaterial.MaterialName, StringFormat='Основной материал: {0}'}"/>
                                 </StackPanel>
-                                <TextBlock Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right" FontWeight="SemiBold" FontSize="16" Text="{Binding ManufacturingTime, StringFormat='Время изготовления: {0} ч.'}"/>
+                                <TextBlock Grid.Column="1" 
+                                         VerticalAlignment="Top" 
+                                         HorizontalAlignment="Right" 
+                                         FontWeight="SemiBold" 
+                                         FontSize="16" 
+                                         Text="{Binding ManufacturingTime, StringFormat='Время изготовления: {0} ч.'}"/>
                             </Grid>
                         </Border>
                     </DataTemplate>
