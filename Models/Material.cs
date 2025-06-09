@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Comfort.Models;
 
+// Модель материала
 public class Material
 {
     [Key]

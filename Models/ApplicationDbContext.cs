@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Comfort.Models;
 
+// Контекст базы данных
 public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -10,7 +11,7 @@ public class ApplicationDbContext : DbContext
     {
     }
 
-    // Конструктор по умолчанию для WPF
+    // Конструктор для WPF
     public ApplicationDbContext() : base(GetOptions())
     {
     }
@@ -29,11 +30,12 @@ public class ApplicationDbContext : DbContext
     public DbSet<Workshop> Workshops { get; set; }
     public DbSet<ProductWorkshop> ProductWorkshops { get; set; }
 
+    // Настройка модели данных
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        // Настройка уникальных индексов
+        // Уникальные индексы
         modelBuilder.Entity<ProductType>()
             .HasIndex(pt => pt.ProductTypeName)
             .IsUnique();
@@ -50,7 +52,7 @@ public class ApplicationDbContext : DbContext
             .HasIndex(p => p.Article)
             .IsUnique();
 
-        // Настройка связей
+        // Связи между сущностями
         modelBuilder.Entity<Product>()
             .HasOne(p => p.ProductType)
             .WithMany(pt => pt.Products)

@@ -18,12 +18,12 @@ public partial class App : Application
     private ServiceProvider _serviceProvider = null!;
     private IErrorHandlingService _errorHandling = null!;
 
-    // Конструктор приложения. Инициализирует все необходимые компоненты
+    // Инициализация приложения
     public App()
     {
         try
         {
-            // Настройка логирования должна быть первой, чтобы логировать возможные ошибки
+            // Настройка логирования для логирования ошибок
             ConfigureLogging();
             
             // Инициализация контейнера зависимостей
@@ -45,7 +45,7 @@ public partial class App : Application
         }
     }
 
-    // Настраивает систему логирования Serilog
+    // Настройка логирования Serilog
     private void ConfigureLogging()
     {
         try
@@ -81,7 +81,7 @@ public partial class App : Application
         }
     }
 
-    // Настраивает сервисы приложения и регистрирует их в контейнере зависимостей
+    // Регистрация сервисов
     private void ConfigureServices(IServiceCollection services)
     {
         try
@@ -110,7 +110,7 @@ public partial class App : Application
         }
     }
 
-    // Обработчик события запуска приложения
+    // Обработчик запуска приложения
     protected override void OnStartup(StartupEventArgs e)
     {
         try
@@ -135,7 +135,7 @@ public partial class App : Application
         }
     }
 
-    // Обработчик необработанных исключений в домене приложения
+    // Обработчик необработанных исключений в домене
     private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
         var exception = e.ExceptionObject as Exception;

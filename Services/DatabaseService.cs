@@ -5,12 +5,14 @@ using Comfort.Models;
 
 namespace Comfort.Services;
 
+// Интерфейс сервиса базы данных
 public interface IDatabaseService
 {
     Task<bool> TestConnectionAsync();
     ApplicationDbContext CreateDbContext();
 }
 
+// Реализация сервиса базы данных
 public class DatabaseService : IDatabaseService
 {
     private readonly ILogger<DatabaseService> _logger;

@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Comfort.Models;
 
+// Модель продукта
 public class Product
 {
     [Key]
@@ -36,7 +37,7 @@ public class Product
 
     public virtual ICollection<ProductWorkshop> ProductWorkshops { get; set; } = new List<ProductWorkshop>();
 
-    // Вычисляемое свойство для времени изготовления
+    // Время изготовления
     [NotMapped]
     public int ManufacturingTime => (int)Math.Ceiling(ProductWorkshops.Sum(pw => pw.ManufacturingTime));
 } 
