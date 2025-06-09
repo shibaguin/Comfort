@@ -109,7 +109,7 @@ namespace Comfort.ViewModels
             if (product == null) return;
 
             var workshopView = new WorkshopView();
-            var workshopViewModel = App.Services.GetService<WorkshopListViewModel>();
+            var workshopViewModel = App.Services.GetRequiredService<WorkshopListViewModel>();
             workshopViewModel.SelectedProductId = product.ProductID;
             workshopView.DataContext = workshopViewModel;
             _mainViewModel.NavigateTo(workshopView);
