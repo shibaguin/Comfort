@@ -1,0 +1,23 @@
+﻿<Window x:Class="Comfort.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Comfort.Views"
+        mc:Ignorable="d"
+        Title="{Binding WindowTitle}" Height="600" Width="900">
+    <DockPanel>
+        <!-- Header -->
+        <Border Background="#222" Height="56" DockPanel.Dock="Top">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="56"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="1" VerticalAlignment="Center" Foreground="White" FontSize="22" FontWeight="SemiBold" Text="{Binding WindowTitle}"/>
+            </Grid>
+        </Border>
+        <!-- Main Content -->
+        <ContentControl Content="{Binding CurrentView}"/>
+    </DockPanel>
+</Window>
