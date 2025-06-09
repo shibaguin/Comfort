@@ -8,13 +8,6 @@ namespace Comfort.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel
     {
-        private string _windowTitle = "Продукция";
-        public string WindowTitle
-        {
-            get => _windowTitle;
-            set { _windowTitle = value; OnPropertyChanged(); }
-        }
-
         private UserControl _currentView = null!;
         public UserControl CurrentView
         {
@@ -23,9 +16,6 @@ namespace Comfort.ViewModels
             {
                 _currentView = value;
                 OnPropertyChanged();
-                // Обновляем заголовок окна в зависимости от текущей страницы
-                if (_currentView is ProductView) WindowTitle = "Продукция";
-                else if (_currentView is ProductEditView) WindowTitle = ((ProductEditViewModel)_currentView.DataContext).Title;
             }
         }
 
